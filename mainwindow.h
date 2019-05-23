@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "cage.h"
 #include <QPushButton>
+#include "board.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,12 +18,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    Board mainBoard;
     void drawField();
     Cage cages [16][16];
-    void generateField();
     bool gameIsActive=false;
+    bool wasFirstClick=false;
     void startGame();
-    bool generateField(const int mines[40][2]);
 private:
     QIcon iconDefault;
     QPushButton *button[16][16];
@@ -36,7 +37,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void openCage(int x, int y);
     void setMineFlag(int x, int y);
     void redraw();
     void updateGame();

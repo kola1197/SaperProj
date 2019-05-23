@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    iconDefault = QIcon("rofl1.png");
 }
 
 MainWindow::~MainWindow()
@@ -21,7 +20,7 @@ void MainWindow::on_actionExit_triggered()
     this->close();
 }
 
-bool MainWindow::generateField(const int mines[40][2])
+/*bool MainWindow::generateField(const int mines[40][2])
 {
     try {
 
@@ -149,14 +148,14 @@ void MainWindow::generateField()
         }
     }
 }
+*/
 void MainWindow::startGame()
 {
     this->setWindowTitle("Сапер");
     drawField();
-    generateField();
+    mainBoard = Board();
     gameIsActive=true;
 }
-
 
 void MainWindow::onClick()
 {
@@ -164,7 +163,6 @@ void MainWindow::onClick()
     {
         QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
         QString s = buttonSender->toolTip();
-        //std::cout<<"-"<<s.toStdString()<<"-"<<std::endl;
 
         QString x = "";
         QString y = "";
@@ -186,10 +184,20 @@ void MainWindow::onClick()
             }
         }
         std::cout<<x.toStdString()<<" -x, and y = "<<y.toStdString()<<std::endl;
-        openCage(x.toInt(),y.toInt());
+        if (!wasFirstClick)
+        {
+            wasFirstClick=true;
+            mainBoard.generateField(x.toInt(),y.toInt());
+        }
+        if (!mainBoard.openCage(x.toInt(),y.toInt()))
+        {
+            gameIsActive=false;
+            this->setWindowTitle("Game over");
+        }
     }
+    redraw();
 }
-
+/*
 void MainWindow::openCage(int x,int y)
 {
     if (!cages[x][y].opened)
@@ -218,7 +226,7 @@ void MainWindow::openCage(int x,int y)
     }
     updateGame();
 }
-
+*/
 void MainWindow::setMineFlag(int x,int y)
 {
     cages[x][y].mineFlag = true;
@@ -229,7 +237,7 @@ void MainWindow::updateGame()
 {
     if (countOfOpened==16*16-40 && gameIsActive)
     {
-        gameIsActive==false;
+        gameIsActive=false;
         this->setWindowTitle("You win!!!");
     }
     redraw();
@@ -241,11 +249,11 @@ void MainWindow::redraw()
     {
         for (int j=0;j<16;j++)
         {
-            if (cages[i][j].opened)
+            if (mainBoard.cages[i][j].opened)
             {
-                button[i][j]->setText(cages[i][j].text.c_str());
+                button[i][j]->setText(mainBoard.cages[i][j].text.c_str());
             }
-            if (cages[i][j].mineFlag)
+            if (mainBoard.cages[i][j].mineFlag)
             {
                 button[i][j]->setText("?");
             }
