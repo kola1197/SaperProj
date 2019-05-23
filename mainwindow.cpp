@@ -189,7 +189,7 @@ void MainWindow::onClick()
             wasFirstClick=true;
             mainBoard.generateField(x.toInt(),y.toInt());
         }
-        if (!mainBoard.openCage(x.toInt(),y.toInt()))
+        if (mainBoard.openCage(x.toInt(),y.toInt()))
         {
             gameIsActive=false;
             this->setWindowTitle("Game over");
