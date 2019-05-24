@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QPushButton"
 #include <iostream>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -157,7 +157,54 @@ void MainWindow::startGame()
     gameIsActive=true;
 }
 
-void MainWindow::onClick()
+void MainWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::RightButton) emit rightClicked();
+    else if (e->button() == Qt::LeftButton) emit leftClicked();
+}
+
+void MainWindow::onRightClick()
+{
+    if (gameIsActive)
+    {
+        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+        QString s = buttonSender->toolTip();
+
+        QString x = "";
+        QString y = "";
+        bool wasDelimiter=false;
+        for (int i=0;i<s.length();i++)
+        {
+            if (s[i]=='_')
+            {
+                wasDelimiter=true;
+            }
+            else {
+                if (wasDelimiter)
+                {
+                    y+=s[i];
+                }
+                else {
+                    x+=s[i];
+                }
+            }
+        }
+        std::cout<<x.toStdString()<<" -x, and y = "<<y.toStdString()<<std::endl;
+        if (!wasFirstClick)
+        {
+            wasFirstClick=true;
+            mainBoard.generateField(x.toInt(),y.toInt());
+        }
+        if (mainBoard.openCage(x.toInt(),y.toInt()))
+        {
+            gameIsActive=false;
+            this->setWindowTitle("Game over");
+        }
+    }
+    redraw();
+}
+
+void MainWindow::onLeftClick()
 {
     if (gameIsActive)
     {
@@ -261,12 +308,14 @@ void MainWindow::redraw()
     }
 }
 
+
+
 void MainWindow::drawField()
 {
     ui->gridLayout_2->setSpacing(0);
     for (int i=0;i<16;i++)
     {
-        for (int j=0;j<16;j++)
+        for (int j = 0; j < 16; j++)
         {
             QString name = QString::number(i)+"_"+QString::number(j);
             //button[i][j]->setObjectName( "PPPPPP");
@@ -277,12 +326,12 @@ void MainWindow::drawField()
             button[i][j]->setToolTip(name);
             button[i][j]->setToolTipDuration(1);
 
-            connect(button[i][j],SIGNAL( released()),this,SLOT (onClick()));
+            connect(button[i][j], SIGNAL(released()), this, SLOT(mouseReleaseEvent()));
+            connect(this, SIGNAL(rightClicked), this, SLOT(onRightClick));
+            connect(this, SIGNAL(leftClicked), this, SLOT(onLeftClick));
+
             button[i][j]->show();
             ui->gridLayout_2->addWidget(button[i][j],i,j);
         }
     }
-
 }
-
-

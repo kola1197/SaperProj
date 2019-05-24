@@ -1,6 +1,4 @@
 #include "board.h"
-#include "board.h"
-
 #include <QString>
 
 Board::Board()

@@ -73,8 +73,6 @@ add_executable(helloworld main.cpp mainwindow.cpp mainwindow.ui resources.qrc ca
 # Add the Qt5 Widgets for linking
 target_link_libraries(helloworld Qt5::Widgets)
 
-
-
 # Trivial example using gtest and gmock
  add_executable(exampletest exampletest.cpp)
  target_link_libraries(exampletest gtest gmock_main)
