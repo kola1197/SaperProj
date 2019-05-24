@@ -25,7 +25,7 @@ public:
     bool gameIsActive=false;
     bool wasFirstClick=false;
     void startGame();
-
+    std::pair<int,int> findXYInButton();
 
 signals:
     void rightClicked();

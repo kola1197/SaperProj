@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include "qrightclickbutton.h"
+#include "stdio.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,35 +39,8 @@ void MainWindow::onLeftClick()
 {
     if (gameIsActive)
     {
-        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
-        QString s = buttonSender->toolTip();
-
-        QString x = "";
-        QString y = "";
-        bool wasDelimiter=false;
-        for (int i=0;i<s.length();i++)
-        {
-            if (s[i]=='_')
-            {
-                wasDelimiter=true;
-            }
-            else {
-                if (wasDelimiter)
-                {
-                    y+=s[i];
-                }
-                else {
-                    x+=s[i];
-                }
-            }
-        }
-        std::cout<<x.toStdString()<<" -x, and y = "<<y.toStdString()<<std::endl;
-        if (!wasFirstClick)
-        {
-            wasFirstClick=true;
-            mainBoard.generateField(x.toInt(),y.toInt());
-        }
-        if (mainBoard.openCage(x.toInt(),y.toInt()))
+        std::pair<int,int> pair = findXYInButton();
+        if (mainBoard.openCage(pair.first, pair.second))
         {
             gameIsActive=false;
             this->setWindowTitle("Game over");
@@ -79,43 +53,49 @@ void MainWindow::onRightClick()
 {
     if (gameIsActive)
     {
-        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
-        QString s = buttonSender->toolTip();
-
-        QString x = "";
-        QString y = "";
-        bool wasDelimiter=false;
-        for (int i=0;i<s.length();i++)
-        {
-            if (s[i]=='_')
-            {
-                wasDelimiter=true;
-            }
-            else {
-                if (wasDelimiter)
-                {
-                    y+=s[i];
-                }
-                else {
-                    x+=s[i];
-                }
-            }
-        }
-        std::cout<<x.toStdString()<<" -x, and y = "<<y.toStdString()<<std::endl;
-        if (!wasFirstClick)
-        {
-            wasFirstClick=true;
-            mainBoard.generateField(x.toInt(),y.toInt());
-        }
-        setMineFlag(x.toInt(),y.toInt());
+        std::pair<int,int> pair = findXYInButton();
+        setMineFlag(pair.first, pair.second);
     }
     redraw();
 }
 
+std::pair<int,int> MainWindow::findXYInButton()
+{
+    QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+    QString s = buttonSender->toolTip();
+
+    QString x = "";
+    QString y = "";
+    bool wasDelimiter=false;
+    for (int i=0;i<s.length();i++)
+    {
+        if (s[i]=='_')
+        {
+            wasDelimiter=true;
+        }
+        else {
+            if (wasDelimiter)
+            {
+                y+=s[i];
+            }
+            else {
+                x+=s[i];
+            }
+        }
+    }
+    std::cout<<x.toStdString()<<" -x, and y = "<<y.toStdString()<<std::endl;
+    if (!wasFirstClick)
+    {
+        wasFirstClick=true;
+        mainBoard.generateField(x.toInt(),y.toInt());
+    }
+
+    return std::pair<int,int>(x.toInt(), y.toInt());
+}
+
 void MainWindow::setMineFlag(int x,int y)
 {
-    cages[x][y].mineFlag = true;
-    cages[x][y].text = "10";
+    mainBoard.setMineFlag(x, y);
     updateGame();
 }
 
@@ -135,13 +115,20 @@ void MainWindow::redraw()
     {
         for (int j=0;j<16;j++)
         {
-            if (mainBoard.cages[i][j].opened || mainBoard.cages[i][j].mineFlag)
+            if (mainBoard.cages[i][j].opened)
             {
                 button[i][j]->setText(mainBoard.cages[i][j].text.c_str());
             }
-            if (mainBoard.cages[i][j].mineFlag)
+            else
             {
-                button[i][j]->setText("@");
+                if (mainBoard.cages[i][j].mineFlag)
+                {
+                    button[i][j]->setText("@");
+                }
+                else
+                {
+                    button[i][j]->setText("");
+                }
             }
         }
     }
@@ -169,9 +156,5 @@ void MainWindow::drawField()
             ui->gridLayout_2->addWidget(button[i][j],i,j);
         }
     }
-/*
-    connect(this, SIGNAL(rightClicked), this, SLOT(onRightClick));
-    connect(this, SIGNAL(leftClicked), this, SLOT(onLeftClick));
-*/
 }
 

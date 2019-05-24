@@ -8,7 +8,7 @@ Board::Board()
 
 void Board::setMineFlag(int x,int y)
 {
-    cages[x][y].mineFlag = true;
+    cages[x][y].mineFlag = !cages[x][y].mineFlag;
 }
 
 bool Board::generateField(int m,int n)
@@ -234,12 +234,6 @@ bool Board::openCage(int x,int y)
                 }
             }
         }
-        if (cages[x][y].mine)
-        {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return cages[x][y].mine;
     }
 }

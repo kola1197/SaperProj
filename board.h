@@ -13,12 +13,12 @@ public:
     bool gameIsActive=false;
     void startGame();
     bool generateField(const int mines[40][2]);
-    void setMineFlag(int x, int y);
     void redraw();
     void updateGame();
 
     bool generateField(int x, int y);
     bool openCage(int x, int y);
+    void setMineFlag(int x, int y);
 };
 
 #endif // BOARD_H
