@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include "board.h"
 #include "QMouseEvent"
+#include "qrightclickbutton.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -24,6 +26,7 @@ public:
     bool wasFirstClick=false;
     void startGame();
 
+
 signals:
     void rightClicked();
     void leftClicked();
@@ -33,7 +36,7 @@ signals:
 
 private:
     QIcon iconDefault;
-    QPushButton *button[16][16];
+    QRightClickButton *button[16][16];
     int countOfOpened=0;
 
 

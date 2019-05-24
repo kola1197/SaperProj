@@ -68,7 +68,7 @@ endif()
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 # Tell CMake to create the helloworld executable
-add_executable(helloworld main.cpp mainwindow.cpp mainwindow.ui resources.qrc cage.cpp cage.h board.cpp board.h)
+add_executable(helloworld main.cpp mainwindow.cpp mainwindow.ui resources.qrc cage.cpp cage.h board.cpp board.h qrightclickbutton.h qrightclickbutton.cpp)
 
 # Add the Qt5 Widgets for linking
 target_link_libraries(helloworld Qt5::Widgets)

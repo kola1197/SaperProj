@@ -234,7 +234,7 @@ bool Board::openCage(int x,int y)
                 }
             }
         }
-        if (cages[x][y].mine==true)
+        if (cages[x][y].mine)
         {
             return true;
         }
@@ -242,4 +242,4 @@ bool Board::openCage(int x,int y)
             return false;
         }
     }
- }
+}
