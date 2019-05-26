@@ -1,6 +1,6 @@
 #include "board.h"
 #include <QString>
-
+#include <vector>
 Board::Board()
 {
 
@@ -28,8 +28,8 @@ bool Board::generateField(int m,int n)
     int minesToAdd=40;
     while (minesToAdd>0)
     {
-        int x = std::rand() % 16;
-        int y = std::rand() % 16;
+        int x = rand() % 16;
+        int y = rand() % 16;
         if (!cages[x][y].mine)
         {
             if (x!=m || y!=n)
@@ -78,7 +78,7 @@ bool Board::generateField(int m,int n)
                 if (cages[i][j].countOfMines!=0)
                 {
                     //button[i][j]->setText(QString::number(cages[i][j].countOfMines));
-                    cages[i][j].text = QString::number(cages[i][j].countOfMines).toStdString();
+                    cages[i][j].text = QString::number(cages[i][j].countOfMines);
                 }
             }
         }
@@ -97,8 +97,8 @@ void Board::generateField()
     int minesToAdd=40;
     while (minesToAdd>0)
     {
-        int x = std::rand() % 16;
-        int y = std::rand() % 16;
+        int x = rand() % 16;
+        int y = rand() % 16;
         if (!cages[x][y].mine)
         {
             cages[x][y].mine=true;
@@ -137,14 +137,14 @@ void Board::generateField()
                 if (cages[i][j].countOfMines!=0)
                 {
                     //button[i][j]->setText(QString::number(cages[i][j].countOfMines));
-                    cages[i][j].text = QString::number(cages[i][j].countOfMines).toStdString();
+                    cages[i][j].text = QString::number(cages[i][j].countOfMines);
                 }
             }
         }
     }
 }
-
-bool Board::generateField(const int mines[40][2])
+/*
+vector<vector<QString>> Board::generateField(vector<pair<int,int>> mines)
 {
     try {
 
@@ -156,13 +156,13 @@ bool Board::generateField(const int mines[40][2])
             }
         }
 
-        for(int i = 0; i < 40; i++)
+        for(pair<int,int> i : mines)
         {
-            int x = mines[i][0];
-            int y = mines[i][1];
+            int x = i.first;
+            int y = i.second;
             if(x >= 0 && x < 16 && y >= 0 && y < 16)
             {
-                cages[mines[i][0]][mines[i][1]].mine=true;
+                cages[x][y].mine=true;
             }
             else {
                 throw 1;
@@ -201,19 +201,28 @@ bool Board::generateField(const int mines[40][2])
                     if (cages[i][j].countOfMines!=0)
                     {
                         //button[i][j]->setText(QString::number(cages[i][j].countOfMines));
-                        cages[i][j].text = QString::number(cages[i][j].countOfMines).toStdString();
+                        cages[i][j].text = QString::number(cages[i][j].countOfMines);
                     }
                 }
             }
         }
     }
     catch (int e) {
-        std::cout << "Caught exception № "<< e;
-        return false;
+        cout << "Caught exception № "<< e;
+        vector<vector<QString>> vec = {"239","239"};
+        return vec;
     }
-    return true;
+    vector<vector<QString>> vec = {vector<QString>(begin(cages[0]), end(cages[0])),
+                                          vector<QString>(begin(cages[15]), end(cages[15]))};
+    for (int i=0; i < 16; i++) {
+        for (int j = 0; j < 16; j++) {
+            cout << cages[i][j].text.toStdString();
+        }
+        cout<<"\n";
+    }
+    return vec;
 }
-
+*/
 bool Board::openCage(int x,int y)
 {
     if (!cages[x][y].opened)

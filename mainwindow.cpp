@@ -78,7 +78,8 @@ std::pair<int,int> MainWindow::findXYInButton()
             {
                 y+=s[i];
             }
-            else {
+            else
+            {
                 x+=s[i];
             }
         }
@@ -117,7 +118,7 @@ void MainWindow::redraw()
         {
             if (mainBoard.cages[i][j].opened)
             {
-                button[i][j]->setText(mainBoard.cages[i][j].text.c_str());
+                button[i][j]->setText(mainBoard.cages[i][j].text);
             }
             else
             {

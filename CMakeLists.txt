@@ -74,6 +74,6 @@ add_executable(helloworld main.cpp mainwindow.cpp mainwindow.ui resources.qrc ca
 target_link_libraries(helloworld Qt5::Widgets)
 
 # Trivial example using gtest and gmock
- add_executable(exampletest exampletest.cpp)
- target_link_libraries(exampletest gtest gmock_main)
+ add_executable(exampletest exampletest.cpp board.h board.cpp cage.cpp cage.h mainwindow.cpp mainwindow.h mainwindow.ui qrightclickbutton.h qrightclickbutton.cpp)
+ target_link_libraries(exampletest gtest gmock_main Qt5::Widgets)
  add_test(NAME exampletest_test COMMAND exampletest)
