@@ -296,7 +296,8 @@ int Board::openCage(int x,int y)
 {
     if (!cages[x][y].opened)
     {
-        cages[x][y].opened=true;
+        cages[x][y].opened = true;
+        cages[x][y].mineFlag = false;
         countOfOpened++;
         if (cages[x][y].text=="")
         {
@@ -312,6 +313,7 @@ int Board::openCage(int x,int y)
                 }
             }
         }
+
         if(cages[x][y].mine)
             return 1;
         else

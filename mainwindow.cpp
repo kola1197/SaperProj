@@ -49,9 +49,11 @@ void MainWindow::onLeftClick()
                 mainBoard.showAllMines();
                 failedAt = pair;
             }
+            else
+                mainBoard.countFlags();
         }
     }
-    redraw();
+    updateGame();
 }
 
 void MainWindow::onRightClick()
@@ -62,7 +64,6 @@ void MainWindow::onRightClick()
         mainBoard.setMineFlag(pair.first, pair.second);
     }
     updateGame();
-    redraw();
 }
 
 std::pair<int,int> MainWindow::findXYInButton()
