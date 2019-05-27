@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5.1)
 
-project(helloworld)
+project(Saper)
 
 #FIND_PACKAGE(Qt4 REQUIRED)
 #INCLUDE(${QT_USE_FILE})
@@ -67,11 +67,11 @@ endif()
 # Find the QtWidgets library
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
-# Tell CMake to create the helloworld executable
-add_executable(helloworld main.cpp mainwindow.cpp mainwindow.ui resources.qrc cage.cpp cage.h board.cpp board.h qrightclickbutton.h qrightclickbutton.cpp)
+# Tell CMake to create the saper executable
+add_executable(saper main.cpp mainwindow.cpp mainwindow.ui resources.qrc cage.cpp cage.h board.cpp board.h qrightclickbutton.h qrightclickbutton.cpp)
 
 # Add the Qt5 Widgets for linking
-target_link_libraries(helloworld Qt5::Widgets)
+target_link_libraries(saper Qt5::Widgets)
 
 # Trivial example using gtest and gmock
  add_executable(exampletest exampletest.cpp board.h board.cpp cage.cpp cage.h mainwindow.cpp mainwindow.h mainwindow.ui qrightclickbutton.h qrightclickbutton.cpp)

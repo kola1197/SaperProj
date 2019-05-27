@@ -1,6 +1,7 @@
 #include "board.h"
 #include <QString>
 #include <vector>
+#include <ctime>
 Board::Board()
 {
 
@@ -11,8 +12,20 @@ void Board::setMineFlag(int x,int y)
     cages[x][y].mineFlag = !cages[x][y].mineFlag;
 }
 
-bool Board::generateField(int m,int n)
+void Board::countFlags()
 {
+    flagsCounter = 0;
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 16; j++) {
+            if(cages[i][j].mineFlag)
+                flagsCounter++;
+        }
+    }
+}
+
+void Board::generateField(int m,int n)
+{
+    srand(time(NULL));
     int delta [8][2] = {{1 ,  1}, {1 , -1},
                         {1 ,  0}, {-1,  1},
                         {-1,  0}, {-1, -1},
@@ -83,10 +96,13 @@ bool Board::generateField(int m,int n)
             }
         }
     }
+
+    normalizeBoard();
 }
 
 void Board::generateField()
 {
+    srand(time(NULL));
     for (int i=0;i<16;i++)
     {
         for (int j=0;j<16;j++)
@@ -143,7 +159,25 @@ void Board::generateField()
         }
     }
 }
-/*
+
+bool Board::checkWin()
+{
+    int minesCleared = 0;
+    for (int i = 0; i < 16; i++)
+    {
+        for (int j = 0; j < 16; j++)
+        {
+            if(cages[i][j].mine && cages[i][j].mineFlag)
+                minesCleared++;
+        }
+    }
+
+    if(minesCleared == numOfMines)
+        return true;
+    else
+        return false;
+}
+
 vector<vector<QString>> Board::generateField(vector<pair<int,int>> mines)
 {
     try {
@@ -206,30 +240,66 @@ vector<vector<QString>> Board::generateField(vector<pair<int,int>> mines)
                 }
             }
         }
+    normalizeBoard();
     }
     catch (int e) {
         cout << "Caught exception № "<< e;
         vector<vector<QString>> vec = {"239","239"};
         return vec;
     }
-    vector<vector<QString>> vec = {vector<QString>(begin(cages[0]), end(cages[0])),
-                                          vector<QString>(begin(cages[15]), end(cages[15]))};
+    vector<vector<QString>> vec(16, vector<QString>(16));
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 16; j++) {
+            vec[i][j] = cages[i][j].text;
+        }
+    }
+/*
     for (int i=0; i < 16; i++) {
         for (int j = 0; j < 16; j++) {
-            cout << cages[i][j].text.toStdString();
+            cout << vec[i][j].toStdString();
         }
         cout<<"\n";
     }
+*/
     return vec;
 }
-*/
-bool Board::openCage(int x,int y)
+
+void Board::normalizeBoard()
+{
+    for(int i = 0; i < 16; i++)
+    {
+        for(int j = 0; j < 16; j++)
+        {
+            if(cages[i][j].text == "0")
+            {
+                cages[i][j].text = "";
+            }
+        }
+    }
+}
+
+void Board::showAllMines()
+{
+    for(int i = 0; i < 16; i++)
+    {
+        for(int j = 0; j < 16; j++)
+        {
+            if(cages[i][j].mine)
+            {
+                cages[i][j].opened=true;
+            }
+        }
+    }
+}
+
+int Board::openCage(int x,int y)
 {
     if (!cages[x][y].opened)
     {
-        cages[x][y].opened=true;
+        cages[x][y].opened = true;
+        cages[x][y].mineFlag = false;
         countOfOpened++;
-        if (cages[x][y].text=="0")
+        if (cages[x][y].text=="")
         {
             int delta [8][2] = { {1,  1}, {1,  -1},
                                  {1,  0}, {-1,  1},
@@ -243,6 +313,11 @@ bool Board::openCage(int x,int y)
                 }
             }
         }
-        return cages[x][y].mine;
+
+        if(cages[x][y].mine)
+            return 1;
+        else
+            return 0;
     }
+    return -1;
 }

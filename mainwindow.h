@@ -21,11 +21,11 @@ public:
     ~MainWindow();
     Board mainBoard;
     void drawField();
-    Cage cages [16][16];
     bool gameIsActive=false;
     bool wasFirstClick=false;
     void startGame();
     std::pair<int,int> findXYInButton();
+    void newGame();
 
 signals:
     void rightClicked();
@@ -37,8 +37,7 @@ signals:
 private:
     QIcon iconDefault;
     QRightClickButton *button[16][16];
-    int countOfOpened=0;
-
+    pair<int,int> failedAt = {-1, -1};
 
 
 public slots:
@@ -50,9 +49,10 @@ private slots:
     void on_actionExit_triggered();
 
 
+    void on_pushButton_released();
+
 private:
     Ui::MainWindow *ui;
-    void setMineFlag(int x, int y);
     void redraw();
     void updateGame();
 };

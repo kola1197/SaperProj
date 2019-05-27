@@ -10,20 +10,21 @@ TEST(Dummy, foobar)
 {
     EXPECT_EQ(1, 1);
 }
-/*
-bool AreVectorsEq(vector<vector<string>> vec_1, vector<vector<string>> vec_2)
+
+bool AreVectorsEq(vector<vector<QString>> vec_1, vector<vector<QString>> vec_2)
 {
-    for (int i = 0; i < sizeof(vec_1); i++) {
-        for (int j = 0; j< sizeof(vec_2); j++) {
+    for (int i = 0; i < vec_1.size(); i++) {
+        for (int j = 0; j < vec_1[i].size(); j++) {
             if(vec_1[i][j] != vec_2[i][j])
                 return false;
         }
     }
     return true;
 }
-*/
+
 TEST(SaperTest, TestGame)
 {
+    MainWindow w;
     Board board;
     vector<pair<int,int>> mines = {
         {0,0},{0,3},{0,9},
@@ -43,8 +44,8 @@ TEST(SaperTest, TestGame)
         {15,0},{15,3},{15,7},{15,13}};
 
     //EXPECT_TRUE(board.generateField(mines));
-    /*
-    vector<vector<QString>> testBoard = board.generateField(mines);
+
+    vector<vector<QString>> testBoard = w.mainBoard.generateField(mines);
     vector<vector<QString>> expectedBoard = {
          {"#","1","1","#","2","1","1","0","1","#","2","1","1","1","1","1"},
          {"2","2","2","1","2","#","2","1","2","1","2","#","2","2","#","1"},
@@ -63,9 +64,12 @@ TEST(SaperTest, TestGame)
          {"1","1","2","2","2","0","2","2","2","1","#","1","1","1","2","1"},
          {"#","1","1","#","1","0","1","#","1","1","1","1","1","#","1","0"}};
 
-    string testArr[16][16];
-    string expectedArr[16][16];
-*/
-    //EXPECT_TRUE(AreVectorsEq(testBoard,trueBoard));
+    //EXPECT_TRUE(AreVectorsEq(testBoard,expectedBoard));
+
+    //EXPECT_THAT(num1, ElementsAreArray(num2));
+    for (int i = 0; i < 16; i++) {
+        EXPECT_THAT(testBoard[i],ElementsAreArray(expectedBoard[i]));
+    }
+
     //EXPECT_TRUE(board.openCage(0,15));
 }

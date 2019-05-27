@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/helloworld-transparent.png</file>
+        <file>resources/flag.png</file>
+        <file>resources/mine 2.png</file>
+        <file>resources/mine1.png</file>
+        <file>resources/mine1_red.jpg</file>
     </qresource>
 </RCC>
