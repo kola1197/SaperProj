@@ -7,7 +7,6 @@
 #include "board.h"
 #include "QMouseEvent"
 #include "qrightclickbutton.h"
-
 namespace Ui {
 class MainWindow;
 }

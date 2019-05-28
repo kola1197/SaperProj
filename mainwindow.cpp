@@ -40,9 +40,17 @@ void MainWindow::onLeftClick()
     if (gameIsActive)
     {
         std::pair<int,int> pair = findXYInButton();
-        if(!mainBoard.cages[pair.first][pair.second].mineFlag)
+        int x = pair.first, y = pair.second;
+
+        if (!wasFirstClick)
         {
-            if (mainBoard.openCage(pair.first, pair.second) == 1)
+            wasFirstClick=true;
+            mainBoard.generateField(x, y);
+        }
+
+        if(!mainBoard.cages[x][y].mineFlag)
+        {
+            if (mainBoard.openCage(x, y) == 1)
             {
                 gameIsActive=false;
                 this->setWindowTitle("Game over");
@@ -92,32 +100,6 @@ std::pair<int,int> MainWindow::findXYInButton()
         }
     }
     std::cout<<"x = "<<x.toStdString()<<" and y = "<<y.toStdString()<<std::endl;
-
-    if (!wasFirstClick)
-    {
-        wasFirstClick=true;
-        mainBoard.generateField(x.toInt(),y.toInt());
-        /*
-        vector<pair<int,int>> mines = {
-            {0,0},{0,3},{0,9},
-            {1,5},{1,11},{1,14},
-            {2,1},{2,7},{2,12},
-            {3,15},
-            {4,2},{4,4},{4,6},{4,10},
-            {5,13},
-            {6,0},{6,3},{6,11},{6,15},
-            {7,6},{7,8},{7,10},
-            {8,2},{8,4},{8,13},
-            {10,6},{10,11},{10,15},
-            {11,0},{11,4},
-            {12,2},{12,13},
-            {13,3},{13,7},{13,15},
-            {14,10},
-            {15,0},{15,3},{15,7},{15,13}};
-        mainBoard.generateField(mines);
-        */
-    }
-
     return std::pair<int,int>(x.toInt(), y.toInt());
 }
 
