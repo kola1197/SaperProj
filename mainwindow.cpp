@@ -149,7 +149,7 @@ void MainWindow::redraw()
                 if(mainBoard.cages[i][j].text == "#")
                 {
                     if(pair<int,int> {i, j} != failedAt)
-                        button[i][j]->setIcon(QIcon(":/resources/mine1.png"));
+                        button[i][j]->setIcon(QIcon(":/resources/mine.png"));
                 }
                 else
                 {
@@ -158,21 +158,13 @@ void MainWindow::redraw()
                 }
                 if(mainBoard.cages[i][j].text == "")
                 {
-                    //button[i][j]->setStyleSheet("QPushButton{ border: none; solid #ffff00; background-color: gray}");
                     button[i][j]->setEnabled(false);
-                    //grayPal = button[i][j]->palette();
-                    //grayPal.setColor(QPalette::Button, QColor(Qt::darkGray));
-                    //button[i][j]->setAutoFillBackground(true);
-                    //button[i][j]->setPalette(grayPal);
-                    //button[i][j]->update();
-
                 }
             }
             else
             {
                 if (mainBoard.cages[i][j].mineFlag)
                 {
-                    //button[i][j]->setText("@");
                     button[i][j]->setIcon(QIcon(":/resources/flag.png"));
                 }
                 else
