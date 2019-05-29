@@ -62,6 +62,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 # Make this a GUI application on Windows
 if(WIN32)
   set(CMAKE_WIN32_EXECUTABLE ON)
+  set (CMAKE_PREFIX_PATH "C:\\Qt\\5.12.2\\msvc2017\\")
 endif()
 
 # Find the QtWidgets library
